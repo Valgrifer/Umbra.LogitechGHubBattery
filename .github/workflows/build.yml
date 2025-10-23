@@ -4,8 +4,8 @@ on:
     tags: ["*"]
 
 env:
-  SOLUTION_NAME: Umbra.SamplePlugin
-  RELEASE_DIR: out/Release
+  SOLUTION_NAME: Umbra.LogitechGHubBattery
+  RELEASE_DIR: bin/Release
 
 jobs:
   Build:
