@@ -4,6 +4,7 @@ using System.Linq;
 using Umbra.Common;
 using Umbra.LogitechGHubBattery.Services;
 using Umbra.Widgets;
+using Una.Drawing;
 
 namespace Umbra.LogitechGHubBattery.Widgets;
 
@@ -32,6 +33,16 @@ internal partial class LogitechDeviceBatteryStatusWidget(
     private readonly LogitechHub _logitechHub = Framework.Service<LogitechHub>();
     private string? DeviceId => string.IsNullOrEmpty(GetConfigValue<string>("SelectedDevice")) ? null : GetConfigValue<string>("SelectedDevice");
     private DeviceInfo? Device => DeviceId == null ? null : _logitechHub.GetDeviceInfos().FirstOrDefault(d => d.Id == DeviceId);
+    
+    
+    private readonly Node _chargingIcon = new()
+    {
+        ClassList = ["icon", "fa-icon"],
+        Style = new ()
+        {
+            Anchor = Anchor.TopRight
+        }
+    };
 
     public override string GetInstanceName()
     {
@@ -42,7 +53,11 @@ internal partial class LogitechDeviceBatteryStatusWidget(
     protected override void OnLoad()
     {
         IsVisible = false;
-        SetText("---");
+        
+        BodyNode.AppendChild(_chargingIcon);
+        BodyNode.Style.AutoSize = new(AutoSize.Grow, AutoSize.Grow);
+        IconNode.Style.Anchor = Anchor.TopLeft;
+        Node.QuerySelector(".body")!.Style.Anchor = Anchor.TopCenter;
     }
 
     protected override void OnDraw()
@@ -55,7 +70,7 @@ internal partial class LogitechDeviceBatteryStatusWidget(
             return;
         }
         
-        var battery = _logitechHub.GetBatteryState(device)?.Percentage.ToString("0");
+        var battery = _logitechHub.GetBatteryState(device);
         
         if (battery == null)
         {
@@ -64,6 +79,13 @@ internal partial class LogitechDeviceBatteryStatusWidget(
         }
         
         IsVisible = true;
-        SetText($"{battery} %");
+        SetText($"{battery.Percentage:0} %");
+
+        SetSecondIcon(battery);
+    }
+
+    private void SetSecondIcon(BatteryState state)
+    {
+        _chargingIcon.NodeValue = LogitechNodeUtils.GetSecondIcon(state).ToIconString();
     }
 }

@@ -24,6 +24,8 @@ public class DeviceInfo
 public class BatteryState
 {
     [JsonProperty("percentage")] public double Percentage { get; set; }
+    [JsonProperty("charging")] public bool Charging { get; set; }
+    [JsonProperty("fullyCharged")] public bool FullyCharged { get; set; }
 }
 
 [Service]
