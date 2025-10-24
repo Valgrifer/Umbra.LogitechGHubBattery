@@ -77,7 +77,12 @@ public class LogitechHub : IDisposable
             _cacheWrapper[key] = new CachedValue<T>(value);
             return value;
         }
-        ((CachedValue<T>) obj).Value = value;
+        if (obj is CachedValue<T> cached)
+        {
+            cached.Value = value;
+            cached.LastFetch = DateTime.UtcNow;
+        }
+        
         return value;
     }
 
@@ -170,7 +175,7 @@ public class LogitechHub : IDisposable
     private class CachedValue<T>(T value)
     {
         public T Value { get; set; } = value;
-        public DateTime LastFetch { get; set; } = DateTime.UtcNow;
+        public DateTime LastFetch { get; set; } = DateTime.MinValue;
     }
 
     private class WebSocketResponse<T>
