@@ -75,8 +75,4 @@
     <ItemGroup>
         <PackageReference Include="Websocket.Client" Version="5.1.2"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Include="..\udt\**\*.*"/>
-    </ItemGroup>
 </Project>
