@@ -31,13 +31,7 @@ internal partial class LogitechDeviceBatteryStatusWidget(
     
     private readonly LogitechHub _logitechHub = Framework.Service<LogitechHub>();
     private string? DeviceId => string.IsNullOrEmpty(GetConfigValue<string>("SelectedDevice")) ? null : GetConfigValue<string>("SelectedDevice");
-    private DeviceInfo? Device => _logitechHub.GetDeviceInfos().FirstOrDefault(d => d.Id == DeviceId);
-    private string Battery {
-        get {
-            var device = DeviceId;
-            return (device == null ? "---" : _logitechHub.GetBatteryState(device)?.Percentage.ToString("0")) ?? "???";
-        }
-    }
+    private DeviceInfo? Device => DeviceId == null ? null : _logitechHub.GetDeviceInfos().FirstOrDefault(d => d.Id == DeviceId);
 
     public override string GetInstanceName()
     {
@@ -47,11 +41,29 @@ internal partial class LogitechDeviceBatteryStatusWidget(
 
     protected override void OnLoad()
     {
-        SetText("??? %");
+        IsVisible = false;
+        SetText("---");
     }
 
     protected override void OnDraw()
     {
-        SetText($"{Battery} %");
+        var device = DeviceId;
+        
+        if (device == null)
+        {
+            IsVisible = false;
+            return;
+        }
+        
+        var battery = _logitechHub.GetBatteryState(device)?.Percentage.ToString("0");
+        
+        if (battery == null)
+        {
+            IsVisible = false;
+            return;
+        }
+        
+        IsVisible = true;
+        SetText($"{battery} %");
     }
 }
