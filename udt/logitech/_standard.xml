@@ -1,0 +1,123 @@
+<udt>
+    <node class="ui-widget-standard decorated">
+        <node class="wrapper">
+            <node class="icon fa-icon" id="icon"/>
+            <node class="text"/>
+            <node class="icon fa-icon" id="state"/>
+        </node>
+    </node>
+
+    <![CDATA[
+    .ui-widget-standard {
+        background-color: 0;
+        stroke-color: 0;
+        border-radius: 5;
+        stroke-radius: 3;
+        stroke-width: 1;
+        stroke-inset: 1;
+        auto-size: grow;
+        padding: 0;
+        
+        &.decorated {
+            background-color: "Widget.Background";
+            stroke-color: "Widget.Border";
+            padding: 0 3;
+            
+            &:hover {
+                background-color: "Widget.BackgroundHover";
+                stroke-color: "Widget.BorderHover";
+            }
+        }
+        
+        & > .wrapper {
+            auto-size: grow;
+            anchor: middle-center;
+            
+            & > .icon {
+                auto-size: fit grow;
+                image-grayscale: false;
+                margin: 0;
+                
+                font: 2;
+                font-size: 16;
+                color:  "Widget.Text";
+                outline-color: "Widget.TextOutline";
+                outline-size: 2;
+                text-align: middle-center;
+                text-offset: 0 1;
+                padding: 0 4;
+                
+                &.desaturated {
+                    image-grayscale: true;
+                }
+            }
+            
+            & > .text {
+                anchor: top-center;
+                auto-size: fit grow;
+                text-align: middle-center;
+                padding: 0 4;
+                color:  "Widget.Text";
+                outline-color: "Widget.TextOutline";
+                outline-size: 2;
+                font-size: 13;
+                
+                .text { font: 0; }
+            }
+            
+            & > #icon {
+                anchor: top-left;
+            }
+            
+            & > #state {
+                anchor: top-right;
+            }
+        }
+    }
+    
+    .ui-widget-standard.reverse > .wrapper { flow-order: reverse; }
+    
+    .ui-widget-standard.text-align-left {
+        .text { anchor: middle-left; }
+    }
+    
+    .ui-widget-standard.text-align-right {
+        .text { anchor: middle-right; }
+    }
+    
+    .ui-widget-standard.text-align-center {
+        .text { anchor: middle-center; }
+    }
+    
+    .ui-widget-standard.text-only {
+        .icon { is-visible: false; }
+        .text { is-visible: true; }
+    }
+    
+    .ui-widget-standard.icon-only {
+        .icon { is-visible: true; }
+        .text { is-visible: false; }
+    }
+    
+    .ui-widget-standard:hover > .wrapper {
+        & > .icon {
+            color: "Widget.TextHover";
+        }
+        & > .text {
+            color: "Widget.TextHover";
+        }
+    }
+    
+    .ui-widget-standard:disabled {
+        opacity: 0.7;
+        
+        .icon { 
+            color: "Widget.TextDisabled";
+            image-grayscale: true;
+        }
+        .text {
+            color: "Widget.TextDisabled";
+        }
+    }
+    ]]>
+</udt>
